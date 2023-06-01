@@ -1,0 +1,59 @@
+html {
+  background-color: thistle;
+}
+header {
+  font-size: 30px;
+  background-color: gold;
+  width: auto;
+  height: 80px;
+  border-radius: 10px;
+  border: 1px solid white;
+  margin-top: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+h1 {
+  font-size: 45px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: gray;
+}
+label {
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
+}
+input {
+  display: table;
+}
+.inputsearch {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+.mycards {
+  margin: 20px auto 0px auto;
+  width: auto;
+  max-width: 1000px;
+}
+.card > img {
+  background-color: white;
+  margin: 100px auto 100px 400px;
+  width: 300px;
+  max-width: center;
+  padding: 20px;
+  display: flex;
+}
+.mytitle > button:hover {
+  border: 2px solid white;
+}
+.col {
+  margin-top: 10px;
+  width: auto;
+  max-width: auto;
+  display: flex;
+}
