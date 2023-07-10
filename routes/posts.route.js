@@ -2,6 +2,7 @@
 
 const express = require("express");
 const { Posts, Likes } = require("../models");
+const { Sequelize } = require("sequelize"); // sequelize 모델 사용
 const router = express.Router();
 const authMiddleware = require("../middlewares/auth-middleware");
 const { Op } = require("sequelize");
@@ -19,20 +20,55 @@ router.post("/posts", authMiddleware, async (req, res) => {
   return res.status(201).json({ data: { post } });
 });
 
-// 게시글 목록 조회 API
+// 게시글 목록 조회 API  1번째로 했을때 좋아요 COUNT가 되질 않았음.
+// router.get("/posts", async (req, res) => {
+//   try {
+//     const posts = await Posts.findAll({
+//       attributes: ["postId", "UserId", "title", "createdAt", "updatedAt", "nickname", "content"],
+//       include: [
+//         {
+//           model: Likes,
+//           attributes: ["likeId"],
+//         },
+//       ],
+//       order: [["createdAt", "DESC"]],
+//     });
+//     //   console.log(posts);
+//     if (!posts) return res.status(400).json({ errorMassage: "게시글 조회에 실패하였습니다." });
+//     return res.status(200).json({ data: posts });
+//   } catch (err) {
+//     console.log(err.message);
+//   }
+// });
+
+// 게시글 목록 조회 API 2번째 COUNT 표시 코드
 router.get("/posts", async (req, res) => {
   try {
     const posts = await Posts.findAll({
-      attributes: ["postId", "UserId", "title", "createdAt", "updatedAt", "nickname", "content"],
+      // Posts모델에서 모든게시글을 찾고 아래 속성들을 API응답에 포함시킴
+      attributes: [
+        "postId",
+        "UserId",
+        "title",
+        "createdAt",
+        "updatedAt",
+        "nickname",
+        "content",
+        // 1. 5번째줄 Sequelize 라이브러리를 호출한다.
+        // 2. Sequelize의 COUNT함수를 사용하여 Likes모델의 likeId를 받고 뒤의 likesCount로 저장한다.
+        [Sequelize.fn("COUNT", Sequelize.col("Likes.likeId")), "likesCount"],
+      ],
       include: [
         {
+          // Likes모델을 참조하여 속성에 좋아요를한 likeId를 반환
           model: Likes,
-          attributes: ["likeId"],
+          attributes: ["likeId"], // likeId 없이 빈 배열[] 이면 likeId를 카운트한것을 반환
         },
       ],
-      order: [["createdAt", "DESC"]],
+      order: [["createdAt", "DESC"]], // createdAt(생성날짜)기준으로 내림차순정렬(DESC)
+      group: ["Posts.postId"], // group을 통해 게시물ID별로 그룹화
     });
-    //   console.log(posts);
+
     if (!posts) return res.status(400).json({ errorMassage: "게시글 조회에 실패하였습니다." });
     return res.status(200).json({ data: posts });
   } catch (err) {
