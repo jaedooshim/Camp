@@ -1,0 +1,17 @@
+# 옵션(option)
+npx sequelize model:generate --name Option --attributes extra_price:INTEGER,shot_price:INTEGER,hot:BOOLEAN
+
+# 상품(item)
+npx sequelize model:generate --name Item --attributes Option_id:INTEGER,name:STRING,price:INTEGER,type:ENUM,amount:INTEGER
+
+# 주문상품(order_item)
+npx sequelize model:generate --name Order_item --attributes item_id:INTEGER,amount:INTEGER,state:INTEGER
+
+# 상품주문고객(item-order-customer)
+npx sequelize model:generate --name Item_order_customer --attributes Item_id:INTEGER,Order_customer_id:INTEGER,amount:INTEGER
+
+# 주문한고객(order-customer)
+npx sequelize model:generate --name Order_customer --attributes state:INTEGER
+
+# 관리자(admin)
+npx sequelize model:generate --name Admin --attributes email:STRING,password:STRING,name:STRING
