@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       amount: DataTypes.INTEGER,
       state: {
         allowNull: false,
+        // 상품 발주상태 ENUM으로 추가
         type: DataTypes.ENUM("ORDERED", "PENDING", "COMPLETED", "CANCELED"),
         defaultValue: 0,
       },
