@@ -17,8 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       Option_id: DataTypes.INTEGER,
       name: DataTypes.STRING,
       price: DataTypes.INTEGER,
-      type: DataTypes.ENUM,
-      values: ["COFFEE", "JUICE", "FOOD"],
+      type: DataTypes.ENUM("COFFEE", "JUICE", "FOOD"),
       amount: DataTypes.INTEGER,
     },
     {

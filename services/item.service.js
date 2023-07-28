@@ -37,7 +37,9 @@ class ItemsService {
   modifyItem = async ({ Option_id, name, price, amount }) => {
     const item = await this.itemsRepository.findByIdItem({ Option_id });
     if (!item) throw { code: 404, data: "상품이 존재하지 않습니다." };
+    // 빈칸일 경우
     if (!name || name.trim() === "") throw { code: 404, data: "이름을 입력해주세요" }; // name.trim() => 문자열의 앞뒤 공백제거
+    // 음수일 경우
     if (!price || price < 0) throw { code: 404, data: "가격을 적어주세요" };
 
     // 상품 수정하는 단계
@@ -46,10 +48,17 @@ class ItemsService {
   };
 
   // 상품(item) 삭제
-  deleteItem = async ({ Option_id }) => {
+  deleteItem = async ({ Option_id, amount }) => {
     const item = await this.itemsRepository.findByIdItem({ Option_id });
     if (!item) throw { code: 404, data: "상품이 존재하지 않습니다." };
-
+    if (!amount && item.amount > 0) {
+      throw { code: 200, data: "현재 수량이 남아있습니다. 정말 삭제하시겠습니까?" };
+    }
+    // 상품 수량이 없을 경우와 사용자의 대답"예"의 경우 삭제
+    if (item.amount === 0 || amount === true) {
+      await this.itemsRepository.deleteItem({ Option_id });
+      return { code: 200, data: "상품 삭제 성공" };
+    }
     // 상품 삭제하는 단계
     await this.itemsRepository.deleteItem({ Option_id });
     return { code: 200, data: "상품 삭제 성공" };
