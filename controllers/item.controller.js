@@ -59,6 +59,20 @@ class ItemsController {
       return res.status(500).json({ message: "오류발생" });
     }
   };
+
+  // 상품(item) 삭제
+  deleteItem = async (req, res) => {
+    try {
+      const { Option_id } = req.params;
+      const { code, data } = await this.itemsService.deleteItem({
+        Option_id,
+      });
+      res.status(code).json({ data });
+    } catch (err) {
+      if (err.code) return res.status(err.code).json({ message: data });
+      return res.status(500).json({ message: "오류발생" });
+    }
+  };
 }
 
 module.exports = ItemsController;
