@@ -1,31 +1,44 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Order_item extends Model {
+  class order_item extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      this.belongsTo(models.item, {
+        targetKey: "id",
+        foreignKey: "itemId",
+      });
     }
   }
-  Order_item.init(
+  order_item.init(
     {
-      item_id: DataTypes.INTEGER,
-      amount: DataTypes.INTEGER,
-      state: {
+      id: {
         allowNull: false,
-        // 상품 발주상태 ENUM으로 추가
-        type: DataTypes.ENUM("ORDERED", "PENDING", "COMPLETED", "CANCELED"),
-        defaultValue: 0,
+        autoIncrement: true,
+        primaryKey: true,
+        type: DataTypes.BIGINT,
+      },
+      itemId: {
+        type: DataTypes.BIGINT,
+        allowNull: false,
+      },
+      amount: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      state: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
       },
     },
     {
       sequelize,
-      modelName: "Order_item",
+      modelName: "order_item",
     }
   );
-  return Order_item;
+  return order_item;
 };

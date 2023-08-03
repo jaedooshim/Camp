@@ -1,0 +1,19 @@
+// 트랜잭션 예시 참고용
+await sequelize.transaction(async (transaction) => {
+  const memberCreate = await Member.create({ email, nickname, password: passwordToCrypto, group }, { transaction });
+  await MemberInfo.create({ member_id: memberCreate.member_id, name, phone, address, default: true }, { transaction });
+  await Point.create(
+    {
+      member_id: memberCreate.member_id,
+      point_status_code: 1,
+      point: 1000000,
+      reason: "회원가입 축하 포인트 지급",
+      expiry_at: new Date(expiryDate),
+    },
+    { transaction }
+  );
+});
+
+// 일요일 작업내용
+// 1. 발주 상태 수정 API
+// 2. 상품 주문 API
