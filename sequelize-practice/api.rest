@@ -1,0 +1,23 @@
+GET http://localhost:3000/helloWorld
+
+###
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+    "username":"apple",
+    "password":"password123"
+}
+
+###
+POST http://localhost:3000/posts
+Content-Type: application/json
+
+{
+    "title":"this is title",
+    "content":"this is content!!",
+    "userId":2
+}
+
+###
+GET http://localhost:3000/posts
